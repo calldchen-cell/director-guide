@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第四幕·完成提交 — 导演养成计划</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.doc-template{background:#1E1E3F;color:#E8E8FF;border-radius:16px;padding:22px 24px;margin:12px 0;font-size:.87rem;line-height:2;}
+.doc-fill{color:#FFD54F;font-style:italic;}
+.progress-wrap{margin:16px 0;}
+.progress-bar-bg{background:#EDE7F6;border-radius:999px;height:18px;overflow:hidden;margin-bottom:6px;}
+.progress-bar-fill{background:linear-gradient(90deg,#667eea,#764ba2);height:100%;border-radius:999px;transition:width .5s;width:0%;}
+.progress-label{font-size:.8rem;color:#888;display:flex;justify-content:space-between;}
+.congrats{background:linear-gradient(135deg,#667eea,#764ba2,#f093fb);color:#fff;border-radius:20px;padding:32px 28px;text-align:center;margin:20px 0;}
+.congrats-icon{font-size:3rem;margin-bottom:14px;animation:float 2s ease-in-out infinite;}
+.congrats h3{font-size:1.4rem;font-weight:900;margin-bottom:10px;}
+.congrats p{opacity:.9;font-size:.92rem;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span style="font-size:1.3rem">🎬</span>
+  <a class="nav-home" href="index.html">导演养成计划</a>
+  <a class="nav-item" href="01_story.html">✨ 第一幕·构思故事</a>
+  <a class="nav-item" href="02_prompt.html">🪄 第二幕·导演指令</a>
+  <a class="nav-item" href="03_make.html">🎥 第三幕·用AI制作</a>
+  <a class="nav-item active" href="04_submit.html">🏆 第四幕·完成提交</a>
+  <span class="save-indicator" id="save-indicator"></span>
+  <button class="clear-btn" id="clear-all-btn">清空记录</button>
+</nav>
+
+<div class="hero" style="padding:40px 20px 60px;">
+  <div class="hero-emoji">🏆🎉</div>
+  <h1>第四幕：完成你的导演处女作！</h1>
+  <p class="sub">视频做好了！最后一步：准备好提交材料<br>你已经完成了一件了不起的事情！</p>
+</div>
+
+<div class="container">
+
+  <div class="director-card">
+    <div class="dc-icon">🎬</div>
+    <div>
+      <div class="dc-title">导演任务 #4（最后一关！）</div>
+      <p>除了视频文件，还需要写一份<strong>创作说明</strong>（PDF，500字以内），告诉评委你是怎么创作的、用了什么工具、想表达什么。这是你展示创意思考的重要机会！</p>
+    </div>
+  </div>
+
+  <!-- 进度自查 -->
+  <div class="section blue" id="progress">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div class="section-title">完成进度自查</div>
+    </div>
+    <p>点击打勾，看看你完成了哪些步骤：</p>
+    <ul class="checklist">
+      <li><div class="check-box" data-ckey="c1">☐</div>✅ 想好了故事主题和框架</li>
+      <li><div class="check-box" data-ckey="c2">☐</div>✅ 为每个镜头写好了导演指令</li>
+      <li><div class="check-box" data-ckey="c3">☐</div>✅ 用即梦生成了所有镜头素材</li>
+      <li><div class="check-box" data-ckey="c4">☐</div>✅ 用剪映完成了视频剪辑</li>
+      <li><div class="check-box" data-ckey="c5">☐</div>✅ 加了旁白和背景音乐</li>
+      <li><div class="check-box" data-ckey="c6">☐</div>✅ 视频时长在1～3分钟之间</li>
+      <li><div class="check-box" data-ckey="c7">☐</div>✅ 导出了1080P MP4文件</li>
+      <li><div class="check-box" data-ckey="c8">☐</div>✅ 写完了创作说明文档</li>
+      <li><div class="check-box" data-ckey="c9">☐</div>✅ 创作说明已导出为PDF</li>
+      <li><div class="check-box" data-ckey="c10">☐</div>✅ 视频文件按要求命名（作品名称.mp4）</li>
+    </ul>
+  </div>
+
+  <!-- 创作说明 -->
+  <div class="section purple" id="doc">
+    <div class="section-header">
+      <div class="section-icon">📝</div>
+      <div class="section-title">写创作说明：说出你的故事</div>
+    </div>
+    <p>创作说明不需要写得很"正式"，评委更想看到的是你<strong>真实的想法和创作过程</strong>。用自己的语言来写！</p>
+
+    <div class="callout cool">
+      <div class="callout-icon">📄</div>
+      <div class="callout-body">
+        <strong>创作说明要包含4个部分（500字以内）</strong>
+        <p>① 使用的AI工具名称<br>
+        ② 灵感来源（你为什么想做这个主题）<br>
+        ③ 技术路径（怎么一步步做出来的）<br>
+        ④ 主题表达（你想告诉大家什么）</p>
+      </div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">✏️ 先在这里起草你的创作说明</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">作品名称：</div>
+          <textarea class="answer-line" data-key="doc_title" placeholder="《         》" rows="1"></textarea>
+        </li>
+        <li>
+          <div class="q">使用的AI工具（写清楚）：</div>
+          <textarea class="answer-line" data-key="doc_tools" placeholder="例如：使用即梦（jimeng.jianying.com）生成视频片段�����使用剪映进行剪辑和配音" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">我的创作灵感（为什么想做这个主题？脑子里有什么画面？）：</div>
+          <textarea class="answer-line" data-key="doc_inspo" placeholder="我的灵感来自……  我一直在想……" rows="3"></textarea>
+        </li>
+        <li>
+          <div class="q">我是怎么一步步做出来的（制作过程）：</div>
+          <textarea class="answer-line" data-key="doc_process" placeholder="第一步：……  第二步：……  第三步：……" rows="4"></textarea>
+        </li>
+        <li>
+          <div class="q">我想通过这个视频告诉大家什么（主题）：</div>
+          <textarea class="answer-line" data-key="doc_theme" placeholder="我希望大家看完视频后……  我认为2035年的学校……" rows="3"></textarea>
+        </li>
+      </ul>
+    </div>
+
+    <h3>📄 创作说明参考模板</h3>
+    <div class="doc-template">
+      作品名称：《<span class="doc-fill">填写作品名</span>》<br><br>
+      【使用的AI工具】<br>
+      主要使用即梦（jimeng.jianying.com）生成视频片段，使用剪映进行后期剪辑和配音处理。<br><br>
+      【创作灵感】<br>
+      我的灵感来自<span class="doc-fill">（填写你的灵感来源）</span>。我一直在想，如果2035年的学校能够<span class="doc-fill">（你的想象）</span>，那会是多么美好的事情……<br><br>
+      【技术路径】<br>
+      1. 首先，我想好了故事主题，写下了<span class="doc-fill">（X）</span>个场景的构思<br>
+      2. 然后，我为每个镜头写了"导演指令"，描述了场景、角色、动作、色彩和镜头方式<br>
+      3. 用即梦AI生成了每个视频片段，共生成了<span class="doc-fill">（X）</span>个镜头<br>
+      4. 最后，用剪映将片段拼接，加上了旁白配音和背景音乐<br><br>
+      【主题表达】<br>
+      我希望通过这个视频告诉大家：<span class="doc-fill">（你的想法）</span>。我相信未来的校园会<span class="doc-fill">（你的期待）</span>，AI不会替代<span class="doc-fill">（什么）</span>，但会让<span class="doc-fill">（什么）</span>变得更好。<br><br>
+      制作人：<span class="doc-fill">（姓名）</span>　年级：<span class="doc-fill">（年级）</span>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>如何导出为PDF？</strong>
+        <p>把创作说明复制到Word或Pages（Mac自带），写完后选择"导出为PDF"即可。或者用微信文档、腾讯文档在线编辑，也可以直接导出PDF。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 最终检查清单 -->
+  <div class="section yellow" id="checklist">
+    <div class="section-header">
+      <div class="section-icon">✅</div>
+      <div class="section-title">提交前最终检查</div>
+    </div>
+    <ul class="checklist">
+      <li><div class="check-box" data-ckey="f1">☐</div>📁 视频文件格式为 <strong>MP4</strong></li>
+      <li><div class="check-box" data-ckey="f2">☐</div>📁 文件名格式为"<strong>作品名称.mp4</strong>"</li>
+      <li><div class="check-box" data-ckey="f3">☐</div>⏱️ 视频时长在 <strong>1～3分钟</strong> 之间</li>
+      <li><div class="check-box" data-ckey="f4">☐</div>🖥️ 分辨率为 <strong>1920×1080</strong>，横屏16:9</li>
+      <li><div class="check-box" data-ckey="f5">☐</div>🔊 画面清晰流畅，声音清晰无杂音</li>
+      <li><div class="check-box" data-ckey="f6">☐</div>📄 创作说明已保存为 <strong>PDF格式</strong></li>
+      <li><div class="check-box" data-ckey="f7">☐</div>📄 说明文档包含：AI工具名称</li>
+      <li><div class="check-box" data-ckey="f8">☐</div>📄 说明文档包含：灵感来源</li>
+      <li><div class="check-box" data-ckey="f9">☐</div>📄 说明文档包含：技术路径</li>
+      <li><div class="check-box" data-ckey="f10">☐</div>📄 说明文档包含：主题表达</li>
+    </ul>
+  </div>
+
+  <!-- 7天计划 -->
+  <div class="section teal" id="plan">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div class="section-title">7天导演养成计划</div>
+    </div>
+    <p>皮克斯花了4年，你只需要7天。按这个节奏来，不着急，每天一点点：</p>
+    <div class="week-grid">
+      <div class="day-card">
+        <div class="day-label">DAY 1</div>
+        <div class="day-title">🧠 激发灵感</div>
+        <div class="day-tasks">读完全部指南<br>回答热身问题<br>确定故事方向<br>约1小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 2</div>
+        <div class="day-title">✨ 构思故事</div>
+        <div class="day-tasks">完成故事框架<br>想好旁白开场<br>规划3～5个镜头<br>约1小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 3</div>
+        <div class="day-title">🪄 练习指令</div>
+        <div class="day-tasks">完成画面感游戏<br>学习5个维度<br>为所有镜头写指令<br>约1.5小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 4</div>
+        <div class="day-title">🤖 认识工具</div>
+        <div class="day-tasks">家长陪同注册即梦<br>随意试生成2～3个<br>熟悉操作界面<br>约1小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 5</div>
+        <div class="day-title">🎥 正式生成</div>
+        <div class="day-tasks">按镜头逐一生成<br>每个多试2～3次<br>下载保存最好版本<br>约2小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 6</div>
+        <div class="day-title">✂️ 剪辑合成</div>
+        <div class="day-tasks">剪映拼接视频<br>录旁白/文字转语音<br>加背景音乐<br>约2小时</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 7</div>
+        <div class="day-title">🏆 完成提交</div>
+        <div class="day-tasks">修改完善视频<br>写创作说明PDF<br>对照清单检查<br>提交！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结尾鼓励 -->
+  <div class="congrats">
+    <div class="congrats-icon">🎬</div>
+    <h3>你已经是一位AI电影导演了！</h3>
+    <p>
+      无论最后得什么名次——<br>
+      你亲手把脑子里的想象，变成了真实存在的视频。<br>
+      你学会了用AI工具，学会了写导演指令，学会了讲一个有故事的画面。<br><br>
+      <strong>这已经比大多数人都厉害很多了。🌟</strong><br><br>
+      期待你的未来校园电影！
+    </p>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-btn prev" href="03_make.html">← 第三幕·用AI制作</a>
+    <a class="page-btn" href="index.html">🎬 回到主页</a>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

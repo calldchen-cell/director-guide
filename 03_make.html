@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第三幕·用AI制作 — 导演养成计划</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.faq-item{border-radius:14px;margin:10px 0;border:2px solid #EDE7F6;overflow:hidden;}
+.faq-q{padding:14px 18px;cursor:pointer;font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:10px;background:#F8F6FF;user-select:none;}
+.faq-q::after{content:'▼';margin-left:auto;font-size:.8rem;color:#999;transition:transform .25s;}
+.faq-item.open .faq-q::after{transform:rotate(180deg);}
+.faq-a{display:none;padding:14px 18px;font-size:.87rem;line-height:1.8;color:#444;border-top:1px solid #EDE7F6;background:#fff;}
+.faq-item.open .faq-a{display:block;}
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:14px 0;}
+.tip-card{border-radius:14px;padding:16px 14px;text-align:center;}
+.tip-card:nth-child(1){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);}
+.tip-card:nth-child(2){background:linear-gradient(135deg,#F3E5F5,#E1BEE7);}
+.tip-card:nth-child(3){background:linear-gradient(135deg,#E8F5E9,#C8E6C9);}
+.tip-card:nth-child(4){background:linear-gradient(135deg,#FFF8E1,#FFECB3);}
+.tip-icon{font-size:1.8rem;margin-bottom:8px;}
+.tip-title{font-weight:900;font-size:.88rem;margin-bottom:4px;}
+.tip-desc{font-size:.76rem;color:#555;line-height:1.55;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span style="font-size:1.3rem">🎬</span>
+  <a class="nav-home" href="index.html">导演养成计划</a>
+  <a class="nav-item" href="01_story.html">✨ 第一幕·构思故事</a>
+  <a class="nav-item" href="02_prompt.html">🪄 第二幕·导演指令</a>
+  <a class="nav-item active" href="03_make.html">🎥 第三幕·用AI制作</a>
+  <a class="nav-item" href="04_submit.html">🏆 第四幕·完成提交</a>
+  <span class="save-indicator" id="save-indicator"></span>
+  <button class="clear-btn" id="clear-all-btn">清空记录</button>
+</nav>
+
+<div class="hero" style="padding:40px 20px 60px;">
+  <div class="hero-emoji">🎥✂️</div>
+  <h1>第三幕：用AI制作你的电影</h1>
+  <p class="sub">故事想好了，指令也写好了<br>现在是最激动人心的时刻——让AI帮你把想象变成画面！</p>
+</div>
+
+<div class="container">
+
+  <div class="director-card">
+    <div class="dc-icon">🎬</div>
+    <div>
+      <div class="dc-title">导演任务 #3</div>
+      <p>分两个步骤：先用<strong>即梦</strong>把每个镜头的导演指令变成视频片段，再用<strong>剪映</strong>把所有片段拼成一部完整的电影。</p>
+    </div>
+  </div>
+
+  <!-- 即梦操作 -->
+  <div class="section blue" id="jimeng">
+    <div class="section-header">
+      <div class="section-icon">🤖</div>
+      <div class="section-title">第一步：用即梦生成视频片段</div>
+    </div>
+    <div class="callout cool">
+      <div class="callout-icon">🌐</div>
+      <div class="callout-body">
+        <strong>即梦网址：jimeng.jianying.com</strong>
+        <p>需要家长帮忙注册账号。免费额度可以生成一定数量的视频。</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>登录后找"文生视频"功能</strong>
+          <p>在即梦首页找到"AI视频"或"文生视频"的入口，点击进入。这就是用文字生成视频的功能。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>粘贴你的导演指令</strong>
+          <p>把你在第二幕写好的某个镜头的导演指令，复制粘贴到输入框里。检查：5个维度都写了吗？</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>设置参数</strong>
+          <p>视频比例选 <strong>16:9（横屏）</strong>，时长可以选 5秒 或 10秒。建议先选5秒快速测试效果，满意后再选10秒。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>点击生成，耐心等待</strong>
+          <p>等待 1～3 分钟，AI 会生成 2～4 个不同版本。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>选最好的，下载保存</strong>
+          <p>预览每个版本，选你最喜欢的下载。建议用镜头编号命名文件（如：镜头1.mp4、镜头2.mp4），方便后面剪辑时找到它们。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>重复，直到所有镜头完成</strong>
+          <p>按照你的故事框架，一个镜头一个镜头地生成。每个镜头都多试2～3次——就像开盲盒，多试几次总能找到惊喜！</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout star">
+      <div class="callout-icon">🎲</div>
+      <div class="callout-body">
+        <strong>AI生成就像开盲盒！</strong>
+        <p>每次生成的结果都不一样，就算完全相同的指令也不例外。这是AI的特点——有时候反而会生成出比你想象中还要好的画面！保持好奇心，享受这个过程。</p>
+      </div>
+    </div>
+
+    <h3>💡 如果效果不满意，怎么改进？</h3>
+    <div class="tip-grid">
+      <div class="tip-card">
+        <div class="tip-icon">🔍</div>
+        <div class="tip-title">太模糊？</div>
+        <div class="tip-desc">把"学生"改成"扎双马尾的女孩穿蓝白校服"，把"教室"改成"蓝白色调透明玻璃教室"</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">😵</div>
+        <div class="tip-title">人脸奇怪？</div>
+        <div class="tip-desc">改成简单动作（站立/坐着），加"正面视角，五官清晰"，或改拍背影、手部等局部</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌀</div>
+        <div class="tip-title">风格不统一？</div>
+        <div class="tip-desc">每个镜头的指令里都加上相同的风格词，比如都写"科技感3D动画，蓝白色调"</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🎬</div>
+        <div class="tip-title">想换种感觉？</div>
+        <div class="tip-desc">改变颜色描述，光线从"冷蓝"换成"暖金"，整个画面的情绪就会完全不同</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 剪映操作 -->
+  <div class="section green" id="edit">
+    <div class="section-header">
+      <div class="section-icon">✂️</div>
+      <div class="section-title">第二步：用剪映把片段拼成电影</div>
+    </div>
+    <p>所有镜头素材都准备好了！现在用<strong>剪映</strong>（手机或电脑版均可）把它们拼成完整的电影。</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>新建项目，导入所有素材</strong>
+          <p>打开剪映 → 新建项目 → 导入媒体，把所有下载的镜头文件都导入进来。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>按故事顺序排列到时间轴</strong>
+          <p>把片段拖到下方的时间轴，按照你第一幕规划的故事顺序排好。可以直接拖动来调整先后。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>制作片头和片尾</strong>
+          <p>点击"文字"功能，最开头加一段文字，显示你的作品名称。结尾加上你的姓名和年级。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>加旁白配音</strong>
+          <p>两种方式选一个：① 点击"录音"，自己说旁白（效果最自然）；② 点击"文字转语音"，输入旁白文字，AI帮你配音，选一个你喜欢的声音。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>加背景音乐</strong>
+          <p>点击"音频" → "音乐"，选剪映自带的音乐（不会有版权问题）。推荐科技感、轻松或温暖的背景音乐。调低音量，让旁白更清晰。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>检查时长，然后导出</strong>
+          <p>确认总时长在 1～3 分钟之间。导出设置：分辨率 <strong>1080P</strong>，格式 <strong>MP4</strong>，质量最高。</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout star">
+      <div class="callout-icon">✨</div>
+      <div class="callout-body">
+        <strong>加分小技巧：转场效果</strong>
+        <p>两个片段之间点击竖线，可以加"转场效果"，让画面切换更自然。推荐试试"渐变"或"叠化"——简单好看，不会让人觉得突兀。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 常见问题 -->
+  <div class="section orange" id="faq">
+    <div class="section-header">
+      <div class="section-icon">💬</div>
+      <div class="section-title">遇到问题？这里有解答</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">😕 AI生成的和我想的完全不一样怎么办？</div>
+      <div class="faq-a">先检查指令：5个维度都写了吗？特别是"颜色/氛围"和"镜头方式"这两个维度容易被遗漏。然后把模糊的词换成更具体的：把"学生"改成"扎双马尾的女孩穿蓝白校服"，把"未来感"改成"科技3D动画，蓝白色调"。最后，多试几次！每次生成结果都不同，多生成几个版本总能找到满意的。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">😵 生成的人脸或手看起来很奇怪？</div>
+      <div class="faq-a">这是所有AI视频工具的共同限制，不是你的问题！解决方法：① 改成简单动作（"站着微笑"比"跑步挥手"好生成）；② 在指令里加"正面视角，五官清晰，亚洲面孔"；③ 或者干脆改拍背影、侧影、手部特写——背影有时候比正脸更有故事感！</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">⏱️ 视频太短，凑不到1分钟怎么办？</div>
+      <div class="faq-a">几个办法：① 把每个镜头的时长从5秒改为10秒再重新生成；② 增加2～3个新镜头（比如加一个片头动画、一个场景切换镜头）；③ 在剪映里把旁白说慢一点，配上音乐的前奏和尾声。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">🌀 不同镜头之间风格不一致怎么办？</div>
+      <div class="faq-a">在每个镜头的指令开头，都加上完全相同的风格和色调描述。比如每个指令都以"科技感3D动画，蓝白色调"开头——这样相当于给整部电影统一了"视觉语言"。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">🔇 视频里没有声音很奇怪？</div>
+      <div class="faq-a">完全正常！AI生成的视频通常没有对话声音。在剪映里统一添加：旁白（自己录或文字转语音）+ 背景音乐 + 必要时加字幕。这其实是专业的做法，很多纪录片和宣传视频都是这样处理的。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">💡 怎么让视频有"电影感"？</div>
+      <div class="faq-a">三个小技巧：① 加"电影级色彩分级"这几个字到指令里；② 在剪映里给视频加一个轻微的"电影感滤镜"；③ 旁白语速放慢，配上大气的背景音乐，留出2～3秒的"静默感"让观众回味。</div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-btn prev" href="02_prompt.html">← 第二幕·导演指令</a>
+    <a class="page-btn" href="04_submit.html">第四幕：完成提交 ➜</a>
+  </div>
+
+</div>
+<script src="app.js"></script>
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      q.closest('.faq-item').classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第一幕·构思故事 — 导演养成计划</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin:16px 0;}
+.topic-card{border-radius:16px;padding:18px 16px;text-align:center;border:2px solid transparent;transition:transform .2s,box-shadow .2s;cursor:pointer;}
+.topic-card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(100,100,200,.15);}
+.topic-card:nth-child(1){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-color:#90CAF9;}
+.topic-card:nth-child(2){background:linear-gradient(135deg,#F3E5F5,#E1BEE7);border-color:#CE93D8;}
+.topic-card:nth-child(3){background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-color:#A5D6A7;}
+.topic-card:nth-child(4){background:linear-gradient(135deg,#FFF8E1,#FFECB3);border-color:#FFE082;}
+.topic-card:nth-child(5){background:linear-gradient(135deg,#FCE4EC,#F8BBD0);border-color:#F48FB1;}
+.topic-emoji{font-size:2.4rem;margin-bottom:10px;}
+.topic-name{font-weight:900;font-size:.95rem;margin-bottom:5px;}
+.topic-desc{font-size:.78rem;color:#555;line-height:1.6;}
+.story-structure{display:flex;gap:0;margin:18px 0;border-radius:16px;overflow:hidden;}
+.ss-part{flex:1;padding:18px 14px;text-align:center;}
+.ss-part:nth-child(1){background:linear-gradient(135deg,#E8F0FE,#D0E0FF);}
+.ss-part:nth-child(2){background:linear-gradient(135deg,#F3E8FF,#E8D0FF);}
+.ss-part:nth-child(3){background:linear-gradient(135deg,#E8F8F0,#D0F0E0);}
+.ss-icon{font-size:1.8rem;margin-bottom:6px;}
+.ss-label{font-weight:900;font-size:.95rem;color:var(--purple);margin-bottom:4px;}
+.ss-desc{font-size:.78rem;color:#555;line-height:1.55;}
+@media(max-width:600px){.story-structure{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span style="font-size:1.3rem">🎬</span>
+  <a class="nav-home" href="index.html">导演养成计划</a>
+  <a class="nav-item active" href="01_story.html">✨ 第一幕·构思故事</a>
+  <a class="nav-item" href="02_prompt.html">🪄 第二幕·导演指令</a>
+  <a class="nav-item" href="03_make.html">🎥 第三幕·用AI制作</a>
+  <a class="nav-item" href="04_submit.html">🏆 第四幕·完成提交</a>
+  <span class="save-indicator" id="save-indicator"></span>
+  <button class="clear-btn" id="clear-all-btn">清空记录</button>
+</nav>
+
+<div class="hero" style="padding:40px 20px 60px;">
+  <div class="hero-emoji">✨🎭</div>
+  <h1>第一幕：构思你的故事</h1>
+  <p class="sub">每一部伟大的电影，都从一个问题开始——<br><strong>"如果……会怎样？"</strong></p>
+</div>
+
+<div class="container">
+
+  <div class="director-card">
+    <div class="dc-icon">🎬</div>
+    <div>
+      <div class="dc-title">导演任务 #1</div>
+      <p>在打开任何AI工具之前，先在这里想清楚你要讲什么故事。好故事是一切的开始——就连皮克斯在用电脑做动画之前，也要先把故事板画出来！</p>
+    </div>
+  </div>
+
+  <!-- 想象力热身 -->
+  <div class="section purple">
+    <div class="section-header">
+      <div class="section-icon">🧠</div>
+      <div class="section-title">先来热热身：想象力问答</div>
+    </div>
+    <p>回答下面的问题，不用想"正确答案"，写你脑子里第一个冒出来的念头！</p>
+    <div class="think-box">
+      <div class="think-title">🎮 快速闯关：5个问题</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">如果你可以改变学校里的一件事，你会改变什么？</div>
+          <textarea class="answer-line" data-key="warmup_1" placeholder="我最想改变……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">在《疯狂动物城》里，动物们可以互相理解。如果2035年的学校里，AI可以帮你理解每一个同学，会发生什么有趣的事？</div>
+          <textarea class="answer-line" data-key="warmup_2" placeholder="可能会……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">想象一下：早上走进学校大门，和现在完全不一样的第一件事是什么？</div>
+          <textarea class="answer-line" data-key="warmup_3" placeholder="我看到/感受到……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">在未来的学校里，你觉得什么东西一定还在？（不会被AI改变的）</div>
+          <textarea class="answer-line" data-key="warmup_4" placeholder="我觉得……还在，因为……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">如果你的学校有一个AI助手，你最希望它帮你做什么？你最不希望它做什么？</div>
+          <textarea class="answer-line" data-key="warmup_5" placeholder="希望它……  不希望它……" rows="2"></textarea>
+        </li>
+      </ul>
+    </div>
+    <div class="callout star">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>你刚才写的，就是你的创意种子！</strong>
+        <p>把你觉得最有意思的那个答案圈出来，你的故事可能就从那里生长出来。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选主题 -->
+  <div class="section blue">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <div class="section-title">选一个让你最心动的方向</div>
+    </div>
+    <p>下面是5个方向，但这些只是起点。真正好的故事来自你自己！选一个你最感兴趣的，或者自己想一个新方向。</p>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-emoji">🏛️</div>
+        <div class="topic-name">未来课堂</div>
+        <div class="topic-desc">没有黑板的教室是什么样？AI老师是什么形象？学生怎么提问？</div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-emoji">🤖</div>
+        <div class="topic-name">智慧校园</div>
+        <div class="topic-desc">机器人在校园里做什么？AI怎么帮助大家？有没有搞笑的小故事？</div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-emoji">🌱</div>
+        <div class="topic-name">绿色校园</div>
+        <div class="topic-desc">屋顶农场？太阳能教室？AI帮学校种菜？绿色+科技会碰出什么火花？</div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-emoji">👭</div>
+        <div class="topic-name">友情与成长</div>
+        <div class="topic-desc">有了AI，同学之间的友情会变吗？AI能成为真正的朋友吗？</div>
+      </div>
+      <div class="topic-card">
+        <div class="topic-emoji">🔬</div>
+        <div class="topic-name">奇妙实验课</div>
+        <div class="topic-desc">未来的实验课能去虚拟太空？模拟恐龙时代？什么样的课程让你最兴奋？</div>
+      </div>
+    </div>
+    <div class="think-box">
+      <div class="think-title">📝 记录你的选择</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">我最心动的方向是（可以是上面的，也可以自己想）：</div>
+          <textarea class="answer-line" data-key="topic_choice" placeholder="我想讲的是……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">为什么这个方向让你感兴趣？（想到它的时候，你脑子里出现了什么画面？）</div>
+          <textarea class="answer-line" data-key="topic_why" placeholder="因为……  我脑子里看到了……" rows="2"></textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 故事结构 -->
+  <div class="section green">
+    <div class="section-header">
+      <div class="section-icon">🎞️</div>
+      <div class="section-title">搭建你的故事框架</div>
+    </div>
+    <p>皮克斯有一个秘密公式，几乎所有好电影都用这个结构：</p>
+    <div class="story-structure">
+      <div class="ss-part">
+        <div class="ss-icon">🌅</div>
+        <div class="ss-label">开始</div>
+        <div class="ss-desc">让观众走进你的世界。介绍场景，提出一个让人好奇的问题</div>
+      </div>
+      <div class="ss-part">
+        <div class="ss-icon">🎭</div>
+        <div class="ss-label">展示</div>
+        <div class="ss-desc">这是重点！展示2～4个你最想呈现的未来校园画面</div>
+      </div>
+      <div class="ss-part">
+        <div class="ss-icon">🌟</div>
+        <div class="ss-label">结尾</div>
+        <div class="ss-desc">留下一种感受。期待？温暖？思考？让观众带着它离开</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">🎬</div>
+      <div class="callout-body">
+        <strong>导演小技巧：从一个"如果……"开始</strong>
+        <p>最好的开场白，往往是一个问题。比如：<br>
+        "如果2035年，学校里有一位AI老师了解每个人的学习方式……"<br>
+        "如果有一天，你的书包里只有一块玻璃……"</p>
+      </div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">✏️ 填写你的故事框架</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">我的作品名字（想一个好听的名字，比如《2035，我的一天》《未来校园漫游记》）：</div>
+          <textarea class="answer-line" data-key="story_title" placeholder="《         》" rows="1"></textarea>
+        </li>
+        <li>
+          <div class="q">用一句话说：我的视频想告诉大家……</div>
+          <textarea class="answer-line" data-key="story_one" placeholder="例如：��来的学校让每个孩子都能找到属于自己的学习方式" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">开始（如何把观众带进你的未来世界？）：</div>
+          <textarea class="answer-line" data-key="story_open" placeholder="视频一开始，观众会看到/听到……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">展示的画面1：</div>
+          <textarea class="answer-line" data-key="story_scene1" placeholder="第一个场景：……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">展示的画面2：</div>
+          <textarea class="answer-line" data-key="story_scene2" placeholder="第二个场景：……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">展示的画面3（可选）：</div>
+          <textarea class="answer-line" data-key="story_scene3" placeholder="第三个场景：……" rows="2"></textarea>
+        </li>
+        <li>
+          <div class="q">结尾（你想让观众带着什么感受离开？）：</div>
+          <textarea class="answer-line" data-key="story_end" placeholder="看完视频，我希望大家感到……" rows="2"></textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 旁白 -->
+  <div class="section yellow">
+    <div class="section-header">
+      <div class="section-icon">🎙️</div>
+      <div class="section-title">想好你的旁白（可选，但很加分）</div>
+    </div>
+    <p>旁白就是视频里画外音，就像看纪录片时听到的那个声音。一段好的旁白能让你的视频从"一堆漂亮画面"变成"一个有灵魂的故事"。</p>
+    <div class="callout cool">
+      <div class="callout-icon">🎧</div>
+      <div class="callout-body">
+        <strong>旁白可以是这样的…</strong>
+        <p>"2035年的早晨，小雨走进了和10年前完全不同的学校大门……"<br>"没有人告诉她，今天会有一个改变她学习方式的相遇……"</p>
+      </div>
+    </div>
+    <div class="think-box">
+      <div class="think-title">✏️ 试着写你的开场旁白（2～3句话就够）</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">开场旁白草稿：</div>
+          <textarea class="answer-line" data-key="narration_open" placeholder="（用你最自然的语言来写，不用很正式）" rows="3"></textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-btn prev" href="index.html">← 返回主页</a>
+    <a class="page-btn" href="02_prompt.html">第二幕：学写导演指令 ➜</a>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

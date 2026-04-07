@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第二幕·导演指令 — 导演养成计划</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── 画面感游戏 ── */
+.guess-pair{background:#fff;border:2px solid #EDE7F6;border-radius:18px;padding:22px;margin:14px 0;}
+.guess-title{font-weight:900;color:var(--purple);margin-bottom:14px;font-size:.95rem;}
+.guess-scene{font-size:.85rem;color:#555;margin-bottom:12px;padding:10px 14px;background:#F8F6FF;border-radius:10px;font-style:italic;}
+.guess-options{display:flex;gap:12px;flex-wrap:wrap;}
+.guess-btn{flex:1;min-width:200px;background:#F8F6FF;border:2px solid #D0C0F0;border-radius:12px;padding:14px 16px;font-size:.85rem;line-height:1.7;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:all .2s;}
+.guess-btn:hover:not(:disabled){background:#EDE7F6;border-color:var(--purple);}
+.guess-reveal{display:none;margin-top:14px;background:#E8F8F0;border-radius:12px;padding:14px 16px;font-size:.85rem;color:#2E7D32;border-left:4px solid var(--green);}
+
+/* ── 维度卡片 ── */
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:16px 0;}
+.dim-card{border-radius:18px;padding:20px 18px;border:2px solid transparent;transition:transform .2s;}
+.dim-card:nth-child(1){background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border-color:#CE93D8;}
+.dim-card:nth-child(2){background:linear-gradient(135deg,#E8F5E9,#DCEDC8);border-color:#AED581;}
+.dim-card:nth-child(3){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-color:#90CAF9;}
+.dim-card:nth-child(4){background:linear-gradient(135deg,#FCE4EC,#F8BBD0);border-color:#F48FB1;}
+.dim-card:nth-child(5){background:linear-gradient(135deg,#FFF8E1,#FFECB3);border-color:#FFD54F;}
+.dim-icon{font-size:1.8rem;margin-bottom:8px;}
+.dim-title{font-weight:900;font-size:.95rem;margin-bottom:4px;}
+.dim-desc{font-size:.78rem;color:#666;margin-bottom:10px;line-height:1.6;}
+.dim-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.dim-input-label{font-size:.76rem;color:#888;margin-bottom:4px;}
+
+/* ── 升级工坊 ── */
+.level-cards{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+.level-card{border-radius:14px;padding:16px 18px;cursor:pointer;border:2px solid transparent;transition:all .3s;}
+.level-card:nth-child(1){background:#F5F5F5;border-color:#E0E0E0;}
+.level-card:nth-child(2){background:linear-gradient(135deg,#E3F2FD,#F3E8FF);border-color:#90CAF9;}
+.level-card:nth-child(3){background:linear-gradient(135deg,#E8F5E9,#FFF8E1);border-color:#A5D6A7;}
+.level-card-header{display:flex;align-items:center;gap:12px;}
+.level-stars{font-size:1rem;}
+.level-name{font-weight:900;font-size:.95rem;}
+.level-preview{font-size:.82rem;color:#888;margin-top:4px;}
+.level-card.active .level-preview{color:var(--text);}
+.level-detail{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed #CCC;}
+.level-card.active .level-detail{display:block;}
+.level-prompt{font-size:.85rem;line-height:1.9;color:#333;}
+.level-explain{margin-top:10px;font-size:.8rem;color:#666;background:rgba(255,255,255,.6);border-radius:10px;padding:10px 12px;}
+
+/* ── 提示词生成器 ── */
+.pb-container{background:linear-gradient(135deg,#1E1E3F,#2D2D5F);border-radius:20px;padding:26px 24px;margin:16px 0;color:#E8E8FF;}
+.pb-title{font-size:1.1rem;font-weight:900;margin-bottom:18px;text-align:center;}
+.pb-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.pb-row{display:flex;gap:10px;align-items:center;}
+.pb-row-label{width:90px;flex-shrink:0;font-size:.8rem;opacity:.8;}
+.pb-input{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:9px 12px;color:#E8E8FF;font-size:.86rem;font-family:inherit;outline:none;}
+.pb-input:focus{border-color:#B39DDB;background:rgba(255,255,255,.15);}
+.pb-input::placeholder{color:rgba(255,255,255,.35);font-size:.8rem;}
+.pb-output-wrap{background:rgba(0,0,0,.3);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
+.pb-output-label{font-size:.75rem;opacity:.6;margin-bottom:8px;}
+#pb-output{font-size:.88rem;line-height:1.9;min-height:60px;color:#E8E8FF;}
+#pb-copy{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;transition:transform .2s;}
+#pb-copy:hover{transform:scale(1.02);}
+
+/* ── 例句库 ── */
+.example-cards{display:flex;flex-direction:column;gap:12px;margin:14px 0;}
+.example-card{border-radius:14px;padding:14px 16px;background:#F8F6FF;border-left:4px solid var(--purple);}
+.example-scene{font-size:.8rem;color:var(--purple);font-weight:700;margin-bottom:8px;}
+.example-prompt{font-size:.84rem;line-height:1.85;color:#333;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span style="font-size:1.3rem">🎬</span>
+  <a class="nav-home" href="index.html">导演养成计划</a>
+  <a class="nav-item" href="01_story.html">✨ 第一幕·构思故事</a>
+  <a class="nav-item active" href="02_prompt.html">🪄 第二幕·导演指令</a>
+  <a class="nav-item" href="03_make.html">🎥 第三幕·用AI制作</a>
+  <a class="nav-item" href="04_submit.html">🏆 第四幕·完成提交</a>
+  <span class="save-indicator" id="save-indicator"></span>
+  <button class="clear-btn" id="clear-all-btn">清空记录</button>
+</nav>
+
+<div class="hero" style="padding:40px 20px 60px;">
+  <div class="hero-emoji">🪄✨</div>
+  <h1>第二幕：学写导演指令</h1>
+  <p class="sub">就像导演告诉摄影师"这个镜头要怎么拍"<br>你也要告诉AI"这个画面要怎么生成"</p>
+</div>
+
+<div class="container">
+
+  <div class="director-card">
+    <div class="dc-icon">🎬</div>
+    <div>
+      <div class="dc-title">导演任务 #2</div>
+      <p>这一幕是整个旅程最重要的技能！"导演指令"（也叫提示词）就是你用文字告诉AI要生成什么画面。写得越具体，画面越精彩。</p>
+    </div>
+  </div>
+
+  <!-- 第一节：画面感游戏 -->
+  <div class="section purple" id="game">
+    <div class="section-header">
+      <div class="section-icon">🎮</div>
+      <div class="section-title">先来玩个游戏：你能猜出哪个更好吗？</div>
+    </div>
+    <p>下面每一题，都有两个描述。想象一下，如果你把这些文字发给AI，它会生成哪种画面更好看、更有故事感？点击你的选择，看看答案！</p>
+
+    <!-- 题目1 -->
+    <div class="guess-pair">
+      <div class="guess-title">🤔 第1题：描述一个教室</div>
+      <div class="guess-scene">你想拍一个"未来教室"的镜头，你会怎么告诉AI？</div>
+      <div class="guess-options">
+        <button class="guess-btn" data-answer="bad">A：未来教室</button>
+        <button class="guess-btn" data-answer="good">B：蓝白色调的科技感3D动画教室，没有传统黑板，正中央悬浮着一个旋转的全息地球仪，学生座椅是流线型白色，柔和蓝色灯光，镜头缓缓从左向右扫过</button>
+      </div>
+      <div class="guess-reveal">
+        ✅ <strong>B 更好！</strong> "未来教室"太模糊——AI不知道是什么风格、什么颜色、有什么东西、镜头怎么移动。B告诉了AI：风格（科技感3D）、颜色（蓝白）、物体（全息地球仪）、镜头（从左向右），所以AI能生成出你真正想要的画面。
+      </div>
+    </div>
+
+    <!-- 题目2 -->
+    <div class="guess-pair">
+      <div class="guess-title">🤔 第2题：描述一个角色</div>
+      <div class="guess-scene">你想拍一个小学生走进校门的镜头：</div>
+      <div class="guess-options">
+        <button class="guess-btn" data-answer="bad">A：一个小学生走进校门</button>
+        <button class="guess-btn" data-answer="good">B：一个扎着双马尾、穿蓝白校服的小女孩，背着一个透明发光的书包，迈着轻快的步伐走进玻璃大门，她回头看了一眼镜头，脸上带着好奇的微笑</button>
+      </div>
+      <div class="guess-reveal">
+        ✅ <strong>B 更好！</strong> A里的"小学生"在AI眼里可以是任何样子——男生？女生？什么发型？什么表情？B把所有关键信息都告诉了AI：发型（双马尾）、服装（蓝白校服）、道具（透明发光书包）、动作（迈着轻快的步伐）、情绪（好奇的微笑）。人物立刻变得有生命力了！
+      </div>
+    </div>
+
+    <!-- 题目3 -->
+    <div class="guess-pair">
+      <div class="guess-title">🤔 第3题：描述一个情绪场景</div>
+      <div class="guess-scene">你想拍一个让观众感到"希望"的结尾画面：</div>
+      <div class="guess-options">
+        <button class="guess-btn" data-answer="bad">A：学生和机器人在一起，很开心</button>
+        <button class="guess-btn" data-answer="good">B：暖金色阳光透过玻璃天花板洒下来，几个穿校服的孩子和一个圆形白色机器人围坐在圆形桌旁，孩子们仰头大笑，机器人的眼睛发出温暖的橙色光，画面整体色调温暖明亮，镜头缓慢从上方俯视向下</button>
+      </div>
+      <div class="guess-reveal">
+        ✅ <strong>B 更好！</strong> B有三个秘诀：① 加入了<strong>光线描述</strong>（暖金色阳光），光线会极大影响画面的情绪；② 加入了<strong>情绪细节</strong>（孩子们仰头大笑，机器人眼睛发橙色光）；③ 说明了<strong>整体色调</strong>（温暖明亮）。这三点让AI明白你想要"希望感"而不仅仅是"快乐"。
+      </div>
+    </div>
+
+    <div class="callout star">
+      <div class="callout-icon">🌟</div>
+      <div class="callout-body">
+        <strong>游戏总结：导演指令的三个秘诀</strong>
+        <p>① <strong>说具体，不说模糊</strong>（"蓝白色科技感教室"而不是"教室"）<br>
+        ② <strong>描述情绪，不只是动作</strong>（"好奇的微笑"而不是"笑"）<br>
+        ③ <strong>加入光线和颜色</strong>（光线和色调决定了整个画面的感觉）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二节：5个维度 -->
+  <div class="section blue" id="dims">
+    <div class="section-header">
+      <div class="section-icon">🎨</div>
+      <div class="section-title">导演指令的5个维度</div>
+    </div>
+    <p>一个完整的导演指令由5个维度组成。每个维度控制画面的不同方面。点击下面的词汇标签，可以把它插入到该维度的练习框里！</p>
+
+    <div class="dim-grid">
+
+      <!-- 维度1：风格 -->
+      <div class="dim-card">
+        <div class="dim-icon">🎨</div>
+        <div class="dim-title">维度1：画面风格</div>
+        <div class="dim-desc">控制整个视频的"艺术感"——像迪士尼动画？像真实纪录片？像水彩画？</div>
+        <div class="dim-tags">
+          <span class="tag purple" data-insert="科技感3D动画">科技感3D动画</span>
+          <span class="tag pink" data-insert="温暖动漫风格">温暖动漫风格</span>
+          <span class="tag blue" data-insert="写实风格，高清">写实高清</span>
+          <span class="tag green" data-insert="水彩插画风格">水彩插画</span>
+          <span class="tag yellow" data-insert="2D卡通风格">2D卡通</span>
+        </div>
+        <div class="dim-input-label">我想用的风格（点击上面的标签，或自己写）：</div>
+        <textarea class="answer-line tag-target" data-key="dim_style" placeholder="例如：科技感3D动画" rows="2"></textarea>
+      </div>
+
+      <!-- 维度2：色彩氛围 -->
+      <div class="dim-card">
+        <div class="dim-icon">🌈</div>
+        <div class="dim-title">维度2：色彩与氛围</div>
+        <div class="dim-desc">颜色会带来情绪！蓝色感觉科技冷酷，橙黄感觉温暖希望，紫色感觉梦幻神秘。</div>
+        <div class="dim-tags">
+          <span class="tag blue" data-insert="冷蓝色调，科技感光效">冷蓝科技感</span>
+          <span class="tag yellow" data-insert="暖黄色调，阳光明媚">暖黄阳光</span>
+          <span class="tag purple" data-insert="梦幻紫色，星光点点">梦幻紫色</span>
+          <span class="tag green" data-insert="清新绿色，自然光线">清新绿色</span>
+          <span class="tag pink" data-insert="粉白色调，温柔明亮">粉白温柔</span>
+        </div>
+        <div class="dim-input-label">我想要的色彩氛围：</div>
+        <textarea class="answer-line tag-target" data-key="dim_color" placeholder="例如：冷蓝色调，科技感光效" rows="2"></textarea>
+      </div>
+
+      <!-- 维度3：角色 -->
+      <div class="dim-card">
+        <div class="dim-icon">👤</div>
+        <div class="dim-title">维度3：角色描述</div>
+        <div class="dim-desc">你的主角是谁？长什么样？穿什么？表情如何？描述得越详细，人物越有灵魂！</div>
+        <div class="dim-tags">
+          <span class="tag purple" data-insert="扎双马尾的小女孩，穿蓝白校服">双马尾女孩</span>
+          <span class="tag blue" data-insert="圆形白色机器人，眼睛会发光">发光机器人</span>
+          <span class="tag green" data-insert="全息投影的AI老师，半透明蓝色">全息老师</span>
+          <span class="tag pink" data-insert="一群穿校服的同学，表情开朗">开朗同学们</span>
+        </div>
+        <div class="dim-input-label">我的角色是（外貌＋服装＋表情）：</div>
+        <textarea class="answer-line tag-target" data-key="dim_char" placeholder="例如：扎双马尾的小女孩，穿蓝白校服，眼睛大大的，表情好奇" rows="3"></textarea>
+      </div>
+
+      <!-- 维度4：动作与情绪 -->
+      <div class="dim-card">
+        <div class="dim-icon">🎭</div>
+        <div class="dim-title">维度4：动作与情绪</div>
+        <div class="dim-desc">角色在做什么？带着什么情绪？动作要有"画面感"——能让人想象出来的动作！</div>
+        <div class="dim-tags">
+          <span class="tag purple" data-insert="仰头看着全息屏幕，表情充满好奇">仰望好奇</span>
+          <span class="tag blue" data-insert="轻轻触碰悬浮的光点，表情惊喜">触碰惊喜</span>
+          <span class="tag green" data-insert="向镜头挥手，灿烂微笑">挥手微笑</span>
+          <span class="tag pink" data-insert="缓缓走进教室，四处张望，新奇">新奇张望</span>
+          <span class="tag yellow" data-insert="和机器人击掌，哈哈大笑">击掌大笑</span>
+        </div>
+        <div class="dim-input-label">我想要的动作＋情绪：</div>
+        <textarea class="answer-line tag-target" data-key="dim_action" placeholder="例如：仰头看着全息屏幕，表情充满好奇和惊喜" rows="2"></textarea>
+      </div>
+
+      <!-- 维度5：镜头语言 -->
+      <div class="dim-card">
+        <div class="dim-icon">📷</div>
+        <div class="dim-title">维度5：镜头语言</div>
+        <div class="dim-desc">就像拍照一样，有近景有远景。镜头的远近和移动方式，会让画面感觉完全不同！</div>
+        <div class="dim-tags">
+          <span class="tag blue" data-insert="从远处缓缓推进的镜头">缓缓推进</span>
+          <span class="tag purple" data-insert="从高处俯视向下的镜头">俯视鸟瞰</span>
+          <span class="tag green" data-insert="从左到右缓慢横扫的全景镜头">横扫全景</span>
+          <span class="tag pink" data-insert="拉近到人物面部的特写镜头">面部特写</span>
+          <span class="tag yellow" data-insert="跟随角色移动的镜头">跟随移动</span>
+        </div>
+        <div class="dim-input-label">我想要的镜头方式：</div>
+        <textarea class="answer-line tag-target" data-key="dim_cam" placeholder="例如：从远处缓缓推近，最后停在人物的脸上" rows="2"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 第三节：升级工坊 -->
+  <div class="section green" id="upgrade">
+    <div class="section-header">
+      <div class="section-icon">⬆️</div>
+      <div class="section-title">提示词升级工坊：看看有什么不同</div>
+    </div>
+    <p>同一个场景，提示词越丰富，AI生成的效果差别越大。点击每个等级，看看它们的区别：</p>
+
+    <div class="level-cards">
+      <div class="level-card">
+        <div class="level-card-header">
+          <span class="level-stars">⭐</span>
+          <span class="level-name">初级导演指令</span>
+        </div>
+        <div class="level-preview">👆 点击展开，看看这个指令会生成什么</div>
+        <div class="level-detail">
+          <div class="level-prompt">未来的教室，有学生在上课</div>
+          <div class="level-explain">
+            ❌ <strong>问题在哪里？</strong> AI不知道"未来"是什么风格，不知道是哪个年代，不知道教室里有什么特别的东西，不知道学生在做什么，不知道镜头怎么拍。AI只能"随机猜"，结果可能和你想的完全不一样。
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-card-header">
+          <span class="level-stars">⭐⭐</span>
+          <span class="level-name">进阶导演指令</span>
+        </div>
+        <div class="level-preview">👆 点击展开，看看进步在哪里</div>
+        <div class="level-detail">
+          <div class="level-prompt">科技感的未来教室，蓝色光效，有全息屏幕，学生在看屏幕</div>
+          <div class="level-explain">
+            ✅ <strong>进步了什么？</strong> 加了风格（科技感）、颜色（蓝色）、特别道具（全息屏幕）、动作（学生在看）。但还缺少：人物的具体描述、情绪感、镜头移动方式、整体氛围描述。
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-card-header">
+          <span class="level-stars">⭐⭐⭐</span>
+          <span class="level-name">导演级指令</span>
+        </div>
+        <div class="level-preview">👆 点击展开，看看完整的导演指令</div>
+        <div class="level-detail">
+          <div class="level-prompt"><span class="hl-style">科技感3D动画，蓝白色调</span>，<span class="hl-color">柔和蓝色光效从天花板散落</span>，<span class="hl-scene">一间没有黑板的未来教室，正中央悬浮着一个半透明的全息地球仪，学生桌椅是白色流线型</span>，<span class="hl-char">一个扎双马尾的小女孩仰头看着旋转的地球，表情充满好奇和惊喜</span>，<span class="hl-action">她轻轻伸出手，指尖触到地球投影，地球因此泛出涟漪</span>，<span class="hl-cam">镜头从她身后缓缓推进，最后停在她惊喜的侧脸特写上</span></div>
+          <div class="level-explain">
+            🌟 <strong>为什么这么厉害？</strong> 5个维度全部到位：<br>
+            🎨 风格（科技感3D，蓝白色调）<br>
+            🌈 氛围（柔和蓝色光效）<br>
+            🏙️ 场景（全息地球仪，白色流线型桌椅）<br>
+            👤 角色（双马尾女孩，充满好奇的表情）<br>
+            🎭 动作（指尖触碰，地球泛出涟漪）← 这是神来之笔！<br>
+            📷 镜头（从身后推进到侧脸特写）
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">✨</div>
+      <div class="callout-body">
+        <strong>神来之笔的秘密</strong>
+        <p>注意"指尖触碰，地球泛出涟漪"——这是一个<strong>细节互动</strong>，它让画面有了故事感和魔法感。写提示词时，试着加一个小小的"神来之笔"：人物与环境的一个小互动。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第四节：例句库 -->
+  <div class="section yellow" id="examples">
+    <div class="section-header">
+      <div class="section-icon">📚</div>
+      <div class="section-title">例句库：6个场景的导演指令</div>
+    </div>
+    <p>下面是6个不同未来校园场景的完整导演指令，你可以参考它们的结构，写出自己的版本：</p>
+
+    <div class="example-cards">
+      <div class="example-card">
+        <div class="example-scene">🚪 场景1：走进未来校园大门</div>
+        <div class="example-prompt">
+          <span class="hl-style">科技未来风格，3D动画</span>，晴朗早晨，<span class="hl-char">一个扎双马尾的小学生女孩，穿蓝白校服，背着发光书包</span>，<span class="hl-action">迈着轻快的步伐走进一座全玻璃外墙的未来校园大门，她微笑着回头看了一眼镜头</span>，<span class="hl-scene">门口有一个圆形白色机器人在挥手迎接，校园入口有蓝色光效拱门</span>，<span class="hl-color">色调明亮温暖</span>，<span class="hl-cam">镜头从远处缓缓推近，跟随她走进校园</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-scene">🏛️ 场景2：全息投影课堂</div>
+        <div class="example-prompt">
+          <span class="hl-style">写实风格，高清</span>，<span class="hl-scene">未来科技教室，四面墙是透明触控屏，桌椅白色流线型</span>，<span class="hl-color">柔和蓝白色灯光</span>，<span class="hl-char">教室中央悬浮着一位全息投影AI老师，半透明蓝色光芒，外形友善优雅</span>，<span class="hl-action">她正用手势展开一张巨大的太阳系3D地图，行星缓缓旋转</span>，<span class="hl-scene">学生们抬头仰望，每个人的桌面也同步显示着对应的小地图</span>，<span class="hl-cam">镜头从教室一角缓慢横向扫过，带出整个课堂全景</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-scene">🌿 场景3：屋顶绿色农场</div>
+        <div class="example-prompt">
+          <span class="hl-style">温暖动漫风格，色彩鲜艳</span>，<span class="hl-scene">学校屋顶花园，一排排种植箱里长满番茄和向日葵，角落有小型风力发电机和太阳能板</span>，<span class="hl-color">暖金色阳光铺洒</span>，<span class="hl-char">三个穿校服的孩子和一个圆形小机器人</span>，<span class="hl-action">孩子们蹲下来给植物浇水，机器人帮忙记录生长数据，大家笑着说话</span>，<span class="hl-cam">从高处俯视整个屋顶，镜头缓缓下降靠近孩子们</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-scene">🤝 场景4：人机一起做实验</div>
+        <div class="example-prompt">
+          <span class="hl-style">科技感3D动画</span>，<span class="hl-scene">未来实验室，透明器皿里有发光的液体，墙上有大型数据屏</span>，<span class="hl-color">冷蓝色调加暖橙色点缀</span>，<span class="hl-char">一个戴护目镜的男孩</span><span class="hl-action">和机器人助手一起把两种液体混合，液体混合后发出金色光芒，两人对视，同时发出"哇！"的表情</span>，<span class="hl-cam">镜头先是器皿的特写，然后拉远展示两人的惊喜反应</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-scene">🌅 场景5：温暖的结尾画面</div>
+        <div class="example-prompt">
+          <span class="hl-style">温暖写实风格</span>，<span class="hl-color">傍晚暖金色阳光透过玻璃窗斜射进来</span>，<span class="hl-scene">空旷的未来教室，一个孩子坐在窗边</span>，<span class="hl-char">她手里拿着一本发光的平板，望向窗外的天空</span>，<span class="hl-action">窗外有一颗星星刚刚亮起，她嘴角微微上扬</span>，<span class="hl-cam">镜头从她侧脸拍，慢慢推向窗外的星空，画面逐渐变亮</span>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-scene">🎤 场景6：学生向AI提问</div>
+        <div class="example-prompt">
+          <span class="hl-style">动漫风格，明亮活泼</span>，<span class="hl-scene">圆形讨论教室，学生围坐一圈，中央有一个发光的AI对话柱</span>，<span class="hl-color">暖白色调，阳光充足</span>，<span class="hl-char">一个举手的男孩，表情认真</span>，<span class="hl-action">他站起来提问，AI对话柱上出现了一个卡通脸，随着男孩说话开始思考——脑袋上冒出小齿轮和闪光的问号</span>，<span class="hl-cam">镜头在男孩和AI之间来回切换，节奏轻快</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>用例句时，要加入你自己的创意！</strong>
+        <p>这些例句是参考，不是答案。把里面的角色换成你故事里的人物，把场景改成你想要的样子，加入你自己的"神来之笔"细节。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第五节：提示词生成器 -->
+  <div class="section teal" id="builder">
+    <div class="section-header">
+      <div class="section-icon">⚙️</div>
+      <div class="section-title">导演指令生成器</div>
+    </div>
+    <p>把你的5个维度填入下面，系统会自动帮你拼成完整的导演指令。完成后点击复制，直接粘贴给即梦AI！</p>
+
+    <div class="pb-container">
+      <div class="pb-title">🎬 我的导演指令生成器</div>
+      <div class="pb-rows">
+        <div class="pb-row">
+          <div class="pb-row-label">🎨 风格：</div>
+          <input class="pb-input pb-field" data-key="pb_style" placeholder="例如：科技感3D动画" />
+        </div>
+        <div class="pb-row">
+          <div class="pb-row-label">🌈 色彩氛围：</div>
+          <input class="pb-input pb-field" data-key="pb_color" placeholder="例如：冷蓝色调，科技感光效" />
+        </div>
+        <div class="pb-row">
+          <div class="pb-row-label">🏙️ 场景：</div>
+          <input class="pb-input pb-field" data-key="pb_scene" placeholder="例如：有全息地球的未来教室，白色流线型桌椅" />
+        </div>
+        <div class="pb-row">
+          <div class="pb-row-label">👤 角色＋动作：</div>
+          <input class="pb-input pb-field" data-key="pb_char" placeholder="例如：双马尾女孩仰头看地球，表情好奇，轻轻伸手触碰" />
+        </div>
+        <div class="pb-row">
+          <div class="pb-row-label">📷 镜头：</div>
+          <input class="pb-input pb-field" data-key="pb_cam" placeholder="例如：从身后缓缓推进，停在侧脸特写" />
+        </div>
+      </div>
+      <div class="pb-output-wrap">
+        <div class="pb-output-label">✨ 你的完整导演指令：</div>
+        <div id="pb-output">（在上面填写各个维度，这里会自动拼成完整的导演指令）</div>
+      </div>
+      <button id="pb-copy">📋 复制导演指令</button>
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">✏️ 为你的每个镜头写导演指令</div>
+      <ul class="think-list">
+        <li>
+          <div class="q">镜头1（你的开场画面）的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_1" placeholder="把5个维度都写进去……" rows="4"></textarea>
+        </li>
+        <li>
+          <div class="q">镜头2的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_2" placeholder="" rows="4"></textarea>
+        </li>
+        <li>
+          <div class="q">镜头3的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_3" placeholder="" rows="4"></textarea>
+        </li>
+        <li>
+          <div class="q">镜头4的导演指令（可选）：</div>
+          <textarea class="answer-line" data-key="my_prompt_4" placeholder="" rows="4"></textarea>
+        </li>
+        <li>
+          <div class="q">结尾镜头的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_end" placeholder="" rows="4"></textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-btn prev" href="01_story.html">← 第一幕·构思故事</a>
+    <a class="page-btn" href="03_make.html">第三幕：用AI制作 ➜</a>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

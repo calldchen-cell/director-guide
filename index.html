@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎬 未来导演养成计划</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin:24px 0;}
+.film-card{border-radius:20px;padding:28px 22px;text-align:center;text-decoration:none;color:#fff;transition:transform .25s,box-shadow .25s;display:block;position:relative;overflow:hidden;}
+.film-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(100,100,200,.25);}
+.film-card::after{content:'';position:absolute;bottom:-14px;right:-14px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.1);}
+.film-card:nth-child(1){background:linear-gradient(135deg,#667eea,#764ba2);}
+.film-card:nth-child(2){background:linear-gradient(135deg,#f093fb,#f5576c);}
+.film-card:nth-child(3){background:linear-gradient(135deg,#4facfe,#00f2fe);color:#1A237E;}
+.film-card:nth-child(4){background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1B5E20;}
+.film-card:nth-child(5){background:linear-gradient(135deg,#fa709a,#fee140);color:#4A2000;}
+.film-card-icon{font-size:2.6rem;margin-bottom:12px;}
+.film-card-num{font-size:.75rem;opacity:.75;font-weight:700;margin-bottom:4px;}
+.film-card-title{font-size:1.1rem;font-weight:900;margin-bottom:6px;}
+.film-card-desc{font-size:.8rem;opacity:.85;line-height:1.6;}
+.fun-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.fun-compare .fc{border-radius:14px;padding:16px 18px;text-align:center;}
+.fun-compare .fc.old{background:#F5F5F5;border:2px solid #E0E0E0;}
+.fun-compare .fc.new{background:linear-gradient(135deg,#E8F0FE,#F3E8FF);border:2px solid #B39DDB;}
+.fun-compare .fc-label{font-size:.75rem;font-weight:700;margin-bottom:8px;color:#999;}
+.fun-compare .fc.new .fc-label{color:var(--purple);}
+.fun-compare .fc-text{font-size:.9rem;line-height:1.7;font-weight:700;}
+.movie-refs{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0;}
+.movie-ref{background:#fff;border-radius:14px;padding:14px 16px;border:2px solid #EDE7F6;display:flex;align-items:center;gap:10px;flex:1;min-width:180px;}
+.movie-ref .mr-icon{font-size:1.8rem;}
+.movie-ref .mr-name{font-weight:900;font-size:.9rem;color:var(--purple);}
+.movie-ref .mr-fact{font-size:.78rem;color:#888;margin-top:2px;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span style="font-size:1.3rem">🎬</span>
+  <a class="nav-home" href="index.html">导演养成计划</a>
+  <a class="nav-item" href="01_story.html">✨ 第一幕·构思故事</a>
+  <a class="nav-item" href="02_prompt.html">🪄 第二幕·导演指令</a>
+  <a class="nav-item" href="03_make.html">🎥 第三幕·用AI制作</a>
+  <a class="nav-item" href="04_submit.html">🏆 第四幕·完成提交</a>
+  <span class="save-indicator" id="save-indicator"></span>
+  <button class="clear-btn" id="clear-all-btn">清空记录</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-emoji">🎬🌟🎥</div>
+  <h1>你也可以成为<br>AI电影导演！</h1>
+  <p class="sub">《头脑特工队》《疯狂动物城》的导演们有一个秘密武器——<strong>想象力</strong><br>现在，你还多了一个武器：<strong>AI</strong></p>
+  <div class="hero-badges">
+    <span class="badge">🎬 导演视角</span>
+    <span class="badge">🤖 AI工具</span>
+    <span class="badge">🏫 未来校园</span>
+    <span class="badge">✨ 零基础可学</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section blue">
+    <div class="section-header">
+      <div class="section-icon">🌟</div>
+      <div class="section-title">你知道吗？电影导演也是普通人</div>
+    </div>
+    <div class="movie-refs">
+      <div class="movie-ref"><div class="mr-icon">🧠</div><div><div class="mr-name">《头脑特工队》</div><div class="mr-fact">皮克斯团队花了<strong>4年</strong>才拍完，中间失败了很多次</div></div></div>
+      <div class="movie-ref"><div class="mr-icon">🦊</div><div><div class="mr-name">《疯狂动物城》</div><div class="mr-fact">最初的故事版本和最终版<strong>完全不同</strong>，改了好多遍</div></div></div>
+      <div class="movie-ref"><div class="mr-icon">🐠</div><div><div class="mr-name">《海底总动员》</div><div class="mr-fact">导演灵感来自一句话：<strong>"如果鱼会游泳，为什么不去找孩子？"</strong></div></div></div>
+    </div>
+    <div class="callout star">
+      <div class="callout-icon">⭐</div>
+      <div class="callout-body">
+        <strong>现在轮到你了！</strong>
+        <p>皮克斯花了4年，你只需要<strong>7天</strong>。而且你有一个他们当年没有的超级工具——AI。只要你有故事要讲，AI就能帮你把它变成画面。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section purple">
+    <div class="section-header">
+      <div class="section-icon">🎭</div>
+      <div class="section-title">传统拍视频 vs 你现在要做的</div>
+    </div>
+    <div class="fun-compare">
+      <div class="fc old">
+        <div class="fc-label">传统拍视频需要…</div>
+        <div class="fc-text">📷 摄影机<br>🎭 演员<br>💡 灯光设备<br>🎞️ 专业剪辑软件<br>💰 很多很多钱</div>
+      </div>
+      <div class="fc new">
+        <div class="fc-label">你现在只需要…</div>
+        <div class="fc-text">💻 一台电脑<br>🧠 你的想象力<br>✍️ 文字描述能力<br>🤖 即梦AI工具<br>✨ 就这些！</div>
+      </div>
+    </div>
+    <p>没错，你要做的最重要的事情不是"学技术"，而是<strong>想清楚你想讲什么故事</strong>，然后用文字告诉AI。这就是导演的工作！</p>
+  </div>
+
+  <div class="section green">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <div class="section-title">你的导演养成路线图</div>
+    </div>
+    <p>整个旅程分成四幕，点击任意一幕开始探索：</p>
+    <div class="film-grid">
+      <a class="film-card" href="01_story.html">
+        <div class="film-card-icon">✨</div>
+        <div class="film-card-num">第一幕</div>
+        <div class="film-card-title">构思你的故事</div>
+        <div class="film-card-desc">想象2035年的未来校园，找到你想讲的那个故事</div>
+      </a>
+      <a class="film-card" href="02_prompt.html">
+        <div class="film-card-icon">🪄</div>
+        <div class="film-card-num">第二幕</div>
+        <div class="film-card-title">写出导演指令</div>
+        <div class="film-card-desc">学会用文字"指挥"AI，让它生成你想要的画面</div>
+      </a>
+      <a class="film-card" href="03_make.html">
+        <div class="film-card-icon">🎥</div>
+        <div class="film-card-num">第三幕</div>
+        <div class="film-card-title">用AI制作视频</div>
+        <div class="film-card-desc">用即梦生成镜头，用剪映拼接成完整的电影</div>
+      </a>
+      <a class="film-card" href="04_submit.html">
+        <div class="film-card-icon">🏆</div>
+        <div class="film-card-num">第四幕</div>
+        <div class="film-card-title">完成提交</div>
+        <div class="film-card-desc">写创作说明，检查材料，完成你的导演处女作！</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section yellow">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div class="section-title">比赛要做什么？（一眼看懂）</div>
+    </div>
+    <div class="callout cool">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body">
+        <strong>任务</strong>
+        <p>制作一个 <strong>1～3分钟的AI视频</strong>，主题是：<strong>"2035年的学校会是什么样子？"</strong></p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>要求</th><th>详情</th></tr>
+        <tr><td>📁 格式</td><td>MP4 横屏（16:9）</td></tr>
+        <tr><td>⏱️ 时长</td><td>1～3分钟（含片头片尾）</td></tr>
+        <tr><td>🖥️ 画质</td><td>1920×1080（全高清）</td></tr>
+        <tr><td>🤖 核心</td><td>主要内容必须用 AI 工具创作</td></tr>
+        <tr><td>📄 说明书</td><td>PDF，500字以内（写制作过程和想法）</td></tr>
+      </table>
+    </div>
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>好消息：比赛重在创意！</strong>
+        <p>评委最看重的是你的<strong>想法和故事</strong>，不是技术有多复杂。一个有创意的普通视频，比一个没有故事的"炫技"视频更厉害！</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <span></span>
+    <a class="page-btn" href="01_story.html">开始第一幕：构思故事 ➜</a>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
