@@ -143,6 +143,122 @@ function applyChecked(box, checked) {
   else box.style.border = 'none';
 }
 
+/* ── 故事内容跨页回显（#4）── */
+function initStoryContext() {
+  const map = {
+    'ctx_title':  'story_title',
+    'ctx_scene1': 'story_scene1',
+    'ctx_scene2': 'story_scene2',
+    'ctx_scene3': 'story_scene3',
+  };
+  Object.entries(map).forEach(([ctxId, storyKey]) => {
+    const el = document.getElementById(ctxId);
+    if (!el) return;
+    const val = localStorage.getItem(STORAGE_PREFIX + storyKey);
+    el.textContent = (val && val.trim()) ? val : '（还没填写，去第一幕补上）';
+    el.style.color = (val && val.trim()) ? '#333' : '#BDBDBD';
+  });
+}
+
+/* ── 提示词自检清单（#5）── */
+function initPromptChecklist() {
+  document.querySelectorAll('.prompt-checklist').forEach(list => {
+    const badge = list.nextElementSibling;
+    const items = list.querySelectorAll('.pcheck-item');
+    const groupKey = list.dataset.group;
+
+    // 恢复已保存状态
+    items.forEach((item, i) => {
+      const key = STORAGE_PREFIX + 'pcheck_' + groupKey + '_' + i;
+      if (localStorage.getItem(key) === '1') item.classList.add('checked');
+    });
+    checkBadge();
+
+    items.forEach((item, i) => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('checked');
+        localStorage.setItem(
+          STORAGE_PREFIX + 'pcheck_' + groupKey + '_' + i,
+          item.classList.contains('checked') ? '1' : '0'
+        );
+        checkBadge();
+      });
+    });
+
+    function checkBadge() {
+      const allChecked = Array.from(items).every(it => it.classList.contains('checked'));
+      if (badge && badge.classList.contains('pcheck-badge')) {
+        badge.classList.toggle('show', allChecked);
+      }
+    }
+  });
+}
+
+/* ── 里程碑庆祝 Toast（#2）── */
+function showMilestoneToast(message, toastKey) {
+  if (localStorage.getItem(STORAGE_PREFIX + toastKey) === '1') return;
+  const toast = document.createElement('div');
+  toast.className = 'milestone-toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  localStorage.setItem(STORAGE_PREFIX + toastKey, '1');
+  setTimeout(() => {
+    toast.classList.add('hiding');
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
+
+function initMilestone() {
+  // 01_story.html：故事框架完成
+  const storyKeys = ['story_title', 'story_one', 'story_scene1'];
+  if (storyKeys.every(k => {
+    const v = localStorage.getItem(STORAGE_PREFIX + k);
+    return v && v.trim();
+  })) {
+    const allFilled = () => storyKeys.every(k => {
+      const el = document.querySelector('[data-key="' + k + '"]');
+      return el && el.value.trim();
+    });
+    if (allFilled()) {
+      showMilestoneToast('🏐 满意，故事框架完成！就像赛前排兵布阵，你已经准备好了！', 'ms_story');
+    }
+  }
+  document.querySelectorAll('[data-key="story_title"],[data-key="story_one"],[data-key="story_scene1"]')
+    .forEach(el => {
+      el.addEventListener('input', () => {
+        const allFilled = storyKeys.every(k => {
+          const e = document.querySelector('[data-key="' + k + '"]');
+          return e && e.value.trim();
+        });
+        if (allFilled) showMilestoneToast('🏐 满意，故事框架完成！就像赛前排兵布阵，你已经准备好了！', 'ms_story');
+      });
+    });
+
+  // 02_prompt.html：三条指令完成
+  const promptKeys = ['my_prompt_1', 'my_prompt_2', 'my_prompt_end'];
+  const promptCheck = () => promptKeys.every(k => {
+    const el = document.querySelector('[data-key="' + k + '"]');
+    return el && el.value.trim();
+  });
+  if (promptCheck()) showMilestoneToast('🎵 三条导演指令写好了！女高音唱响——你的画面语言已经成形！', 'ms_prompt');
+  document.querySelectorAll('[data-key="my_prompt_1"],[data-key="my_prompt_2"],[data-key="my_prompt_end"]')
+    .forEach(el => {
+      el.addEventListener('input', () => {
+        if (promptCheck()) showMilestoneToast('🎵 三条导演指令写好了！女高音唱响——你的画面语言已经成形！', 'ms_prompt');
+      });
+    });
+
+  // 03_make.html：点击里程碑按钮
+  const msBtn = document.getElementById('milestone-make-btn');
+  if (msBtn) {
+    msBtn.addEventListener('click', () => {
+      showMilestoneToast('🏆 所有镜头就位！满意，你是自己电影的主力队员！', 'ms_make');
+      msBtn.textContent = '✅ 已确认！进入剪映吧！';
+      msBtn.disabled = true;
+    });
+  }
+}
+
 /* ── 初始化入口 ── */
 document.addEventListener('DOMContentLoaded', () => {
   initStorage();
@@ -151,6 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initGuessGame();
   initLevelCards();
   initChecklist();
+  initStoryContext();
+  initPromptChecklist();
+  initMilestone();
 
   const clearBtn = document.getElementById('clear-all-btn');
   if (clearBtn) clearBtn.addEventListener('click', clearAll);

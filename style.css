@@ -905,3 +905,61 @@ tr:nth-child(even) td{background:#F8F6FF;}
 
 /* ── 响应式 ── */
 @media(max-width:600px){.section{padding:22px 16px;}.hero{padding:40px 14px 60px;}}
+
+/* ── 终点预览（#1）── */
+.showcase-card{background:linear-gradient(135deg,#1E1E3F,#2D1B4E);border-radius:20px;padding:28px 24px;margin:20px 0;color:#E8E8FF;}
+.showcase-title{font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;font-size:1.3rem;color:#FFD54F;margin-bottom:6px;}
+.showcase-meta{font-size:.82rem;color:#A89DCC;margin-bottom:18px;}
+.showcase-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px;}
+.showcase-scene{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;}
+.sc-num{font-size:.72rem;color:#CE93D8;font-weight:700;margin-bottom:4px;}
+.sc-desc{font-size:.86rem;line-height:1.7;color:#D0C8F0;}
+.showcase-narration{background:rgba(255,213,79,.1);border-left:3px solid #FFD54F;border-radius:0 8px 8px 0;padding:10px 14px;font-size:.9rem;font-style:italic;color:#FFE082;line-height:1.7;}
+.showcase-label{font-size:.78rem;color:#9E8BC4;margin-top:14px;text-align:right;}
+
+/* ── 个性化欢迎（#8）── */
+.personal-welcome{background:linear-gradient(135deg,#FFF8E1,#FFF3E0);border:2px solid #FFCC80;border-radius:18px;padding:20px 24px;margin:16px 0;position:relative;}
+.pw-title{font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;font-size:1.2rem;color:#E65100;margin-bottom:10px;}
+.pw-body{font-size:.96rem;line-height:2;color:#5D4037;}
+.pw-tag{display:inline-block;background:#FF8A65;color:#fff;border-radius:999px;padding:2px 10px;font-size:.76rem;margin:0 3px;font-weight:700;}
+
+/* ── 故事回显条（#4）── */
+.story-context-bar{background:linear-gradient(135deg,#E3F2FD,#E8F5E9);border-radius:14px;padding:16px 18px;margin-bottom:18px;border:1.5px solid #B3E0FF;}
+.scb-label{font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;font-size:1rem;color:#0277BD;margin-bottom:10px;}
+.scb-item{font-size:.9rem;color:#555;padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+.scb-key{color:#0277BD;font-weight:700;flex-shrink:0;white-space:nowrap;}
+.scb-val{color:#333;font-style:italic;}
+
+/* ── 提示词自检清单（#5）── */
+.prompt-checklist{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;}
+.pcheck-item{display:flex;align-items:center;gap:6px;background:#F8F6FF;border:1.5px solid #D0C0F0;border-radius:999px;padding:5px 12px;font-size:.82rem;color:#555;cursor:pointer;transition:all .2s;user-select:none;}
+.pcheck-item.checked{background:#EDE7F6;border-color:#7C5CBF;color:#4527A0;}
+.pcheck-item.checked .pci-box::after{content:'✓';}
+.pci-box{width:14px;height:14px;border:2px solid #B39DDB;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#7C5CBF;flex-shrink:0;}
+.pcheck-badge{display:none;margin-top:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;padding:7px 14px;font-size:.88rem;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;}
+.pcheck-badge.show{display:block;}
+
+/* ── 里程碑庆祝 Toast（#2）── */
+.milestone-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;
+  border-radius:18px;padding:16px 30px;font-size:1rem;
+  font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  box-shadow:0 8px 32px rgba(100,80,200,.4);z-index:9999;
+  animation:toastIn .4s ease;white-space:nowrap;pointer-events:none;}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.milestone-toast.hiding{animation:toastOut .4s ease forwards;}
+@keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(16px)}}
+
+/* ── 旁白对比 callout（#6）── */
+.narr-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.nc-bad{background:#FFF3F3;border-radius:12px;padding:12px 14px;border-left:3px solid #EF9A9A;}
+.nc-good{background:#F1F8E9;border-radius:12px;padding:12px 14px;border-left:3px solid #A5D6A7;}
+.nc-label{font-size:.75rem;font-weight:700;margin-bottom:6px;}
+.nc-bad .nc-label{color:#C62828;}
+.nc-good .nc-label{color:#2E7D32;}
+.nc-text{font-size:.88rem;line-height:1.7;color:#444;}
+@media(max-width:500px){.narr-compare{grid-template-columns:1fr;}}
+
+/* ── 里程碑按钮（03_make）── */
+.milestone-btn{display:block;width:100%;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1B5E20;border:none;border-radius:14px;padding:14px 24px;font-size:1.05rem;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;cursor:pointer;margin-top:18px;transition:transform .2s;}
+.milestone-btn:hover{transform:translateY(-2px);}

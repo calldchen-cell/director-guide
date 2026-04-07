@@ -95,6 +95,16 @@
     </div>
   </div>
 
+  <div class="callout cool">
+    <div class="callout-icon">🏐</div>
+    <div class="callout-body">
+      <strong>满意，你已经懂这件事了</strong>
+      <p>打二传的时候，你需要同时看球的弧度、队友的位置、对方拦网的站位——然后在0.1秒内做出最精准的传球。<br>
+      写导演指令也一样：同时想清楚<strong>风格、色彩、角色、动作、镜头</strong>——然后用文字精准地"传"给AI。<br>
+      指令越精准，AI生成的画面越接近你脑子里那个画面。</p>
+    </div>
+  </div>
+
   <!-- 第一节：画面感游戏 -->
   <div class="section purple" id="game">
     <div class="section-header">
@@ -414,26 +424,76 @@
 
     <div class="think-box">
       <div class="think-title">✏️ 为你的每个镜头写导演指令</div>
+
+      <!-- 故事回显条 -->
+      <div class="story-context-bar">
+        <div class="scb-label">📖 你在第一幕写的故事（自动读取）</div>
+        <div class="scb-item"><span class="scb-key">作品名：</span><span class="scb-val" id="ctx_title"></span></div>
+        <div class="scb-item"><span class="scb-key">场景1：</span><span class="scb-val" id="ctx_scene1"></span></div>
+        <div class="scb-item"><span class="scb-key">场景2：</span><span class="scb-val" id="ctx_scene2"></span></div>
+        <div class="scb-item"><span class="scb-key">场景3：</span><span class="scb-val" id="ctx_scene3"></span></div>
+      </div>
+
       <ul class="think-list">
         <li>
-          <div class="q">镜头1（你的开场画面）的导演指令：</div>
-          <textarea class="answer-line" data-key="my_prompt_1" placeholder="把5个维度都写进去……" rows="4"></textarea>
+          <div class="q">根据你的开场场景，写镜头1的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_1" placeholder="把5个维度都写进去：风格、色彩、角色、动作、镜头方式……" rows="4"></textarea>
+          <div class="prompt-checklist" data-group="p1">
+            <div class="pcheck-item"><div class="pci-box"></div>有画面风格</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有色彩氛围</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有角色描述</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有动作情绪</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有镜头方式</div>
+          </div>
+          <div class="pcheck-badge">✅ 五维全到位！满意式精准传球！</div>
         </li>
         <li>
-          <div class="q">镜头2的导演指令：</div>
-          <textarea class="answer-line" data-key="my_prompt_2" placeholder="" rows="4"></textarea>
+          <div class="q">根据你的第一个展示场景，写镜头2的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_2" placeholder="参考上面���例句库，把5个维度都写进去……" rows="4"></textarea>
+          <div class="prompt-checklist" data-group="p2">
+            <div class="pcheck-item"><div class="pci-box"></div>有画面风格</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有色彩氛围</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有角色描述</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有动作情绪</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有镜头方式</div>
+          </div>
+          <div class="pcheck-badge">✅ 五维全到位！满意式精准传球！</div>
         </li>
         <li>
-          <div class="q">镜头3的导演指令：</div>
+          <div class="q">根据你的第二个展示场景，写镜头3的导演指令：</div>
           <textarea class="answer-line" data-key="my_prompt_3" placeholder="" rows="4"></textarea>
+          <div class="prompt-checklist" data-group="p3">
+            <div class="pcheck-item"><div class="pci-box"></div>有画面风格</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有色彩氛围</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有角色描述</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有动作情绪</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有镜头方式</div>
+          </div>
+          <div class="pcheck-badge">✅ 五维全到位！满意式精准传球！</div>
         </li>
         <li>
-          <div class="q">镜头4的导演指令（可选）：</div>
+          <div class="q">镜头4的导演指令（可选，有第三个场景就写）：</div>
           <textarea class="answer-line" data-key="my_prompt_4" placeholder="" rows="4"></textarea>
+          <div class="prompt-checklist" data-group="p4">
+            <div class="pcheck-item"><div class="pci-box"></div>有画面风格</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有色彩氛围</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有角色描述</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有动作情绪</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有镜头方式</div>
+          </div>
+          <div class="pcheck-badge">✅ 五维全到位！满意式精准传球！</div>
         </li>
         <li>
-          <div class="q">结尾镜头的导演指令：</div>
-          <textarea class="answer-line" data-key="my_prompt_end" placeholder="" rows="4"></textarea>
+          <div class="q">根据你的��尾，写最后一个镜头的导演指令：</div>
+          <textarea class="answer-line" data-key="my_prompt_end" placeholder="结尾镜头通常情绪感更强，多用光影和情绪词……" rows="4"></textarea>
+          <div class="prompt-checklist" data-group="pend">
+            <div class="pcheck-item"><div class="pci-box"></div>有画面风格</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有色彩氛围</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有角色描述</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有动作情绪</div>
+            <div class="pcheck-item"><div class="pci-box"></div>有镜头方式</div>
+          </div>
+          <div class="pcheck-badge">✅ 五维全到位！满意式精准传球！</div>
         </li>
       </ul>
     </div>
