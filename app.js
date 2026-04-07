@@ -270,7 +270,103 @@ document.addEventListener('DOMContentLoaded', () => {
   initStoryContext();
   initPromptChecklist();
   initMilestone();
+  initAIFeedback();
+  initPersonalizedInspire();
 
   const clearBtn = document.getElementById('clear-all-btn');
   if (clearBtn) clearBtn.addEventListener('click', clearAll);
 });
+
+/* ── AI 内容点评 ── */
+async function callAIFeedback(type, content, feedbackBox) {
+  const textEl = feedbackBox.querySelector('.afb-text');
+  textEl.textContent = '🤖 思考中……';
+  feedbackBox.classList.add('show');
+  try {
+    const res = await fetch('/api/ai-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, content })
+    });
+    const data = await res.json();
+    textEl.textContent = data.text;
+  } catch (e) {
+    textEl.textContent = '（网络繁忙，稍后再试试吧）';
+  }
+}
+
+function initAIFeedback() {
+  document.querySelectorAll('.ai-feedback-btn').forEach(btn => {
+    const targetKey = btn.dataset.target;
+    const feedbackType = btn.dataset.type;
+    const feedbackBox = btn.nextElementSibling;
+
+    btn.addEventListener('click', async () => {
+      let content = '';
+      if (targetKey === 'story_aggregate') {
+        const keys = ['story_title','story_one','story_open','story_scene1','story_scene2','story_scene3','story_end'];
+        const labels = ['作品名','主题','开场','场景1','场景2','场景3','结尾'];
+        content = keys.map((k, i) => {
+          const v = localStorage.getItem(STORAGE_PREFIX + k);
+          return v ? labels[i] + '：' + v : '';
+        }).filter(Boolean).join('\n');
+      } else {
+        const textarea = document.querySelector(`[data-key="${targetKey}"]`);
+        content = textarea ? textarea.value.trim() : '';
+      }
+      if (!content) { alert('先写点内容，再让AI来看看哦！'); return; }
+      btn.disabled = true;
+      await callAIFeedback(feedbackType, content, feedbackBox);
+      btn.disabled = false;
+    });
+
+    const retry = feedbackBox?.querySelector('.afb-retry');
+    if (retry) { retry.addEventListener('click', () => btn.click()); }
+  });
+}
+
+/* ── 动态个性化灵感卡 ── */
+async function loadInspireCard(card) {
+  const topic = card.dataset.topic;
+  const textEl = card.querySelector('.inspire-card-text');
+  const refreshBtn = card.querySelector('.inspire-refresh');
+  textEl.classList.add('loading');
+  textEl.textContent = '✨ 正在为满意定制……';
+  if (refreshBtn) refreshBtn.disabled = true;
+  try {
+    const res = await fetch('/api/ai-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'inspire', content: topic })
+    });
+    const data = await res.json();
+    textEl.textContent = data.text;
+    textEl.classList.remove('loading');
+  } catch (e) {
+    textEl.textContent = card.dataset.fallback || '导演就是把脑子里的画面传递给所有人——和传球一样。';
+    textEl.classList.remove('loading');
+  }
+  if (refreshBtn) refreshBtn.disabled = false;
+}
+
+function initPersonalizedInspire() {
+  document.querySelectorAll('.inspire-card').forEach(card => {
+    const cacheKey = 'inspire_' + (card.dataset.topic || '').slice(0, 10);
+    const cached = sessionStorage.getItem(cacheKey);
+    const textEl = card.querySelector('.inspire-card-text');
+    if (cached) {
+      textEl.textContent = cached;
+    } else {
+      loadInspireCard(card).then(() => {
+        if (textEl.textContent) sessionStorage.setItem(cacheKey, textEl.textContent);
+      });
+    }
+    const refreshBtn = card.querySelector('.inspire-refresh');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', async () => {
+        await loadInspireCard(card);
+        if (textEl.textContent) sessionStorage.setItem(cacheKey, textEl.textContent);
+      });
+    }
+  });
+}

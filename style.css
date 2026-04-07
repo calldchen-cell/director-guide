@@ -963,3 +963,25 @@ tr:nth-child(even) td{background:#F8F6FF;}
 /* ── 里程碑按钮（03_make）── */
 .milestone-btn{display:block;width:100%;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1B5E20;border:none;border-radius:14px;padding:14px 24px;font-size:1.05rem;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;cursor:pointer;margin-top:18px;transition:transform .2s;}
 .milestone-btn:hover{transform:translateY(-2px);}
+
+/* ── AI 内容点评 ── */
+.ai-feedback-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#26C6DA,#7C5CBF);color:#fff;border:none;border-radius:999px;padding:6px 16px;font-size:.84rem;cursor:pointer;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;margin-top:8px;transition:transform .2s;}
+.ai-feedback-btn:hover{transform:scale(1.04);}
+.ai-feedback-btn:disabled{opacity:.6;cursor:default;transform:none;}
+.ai-feedback-box{display:none;margin-top:10px;background:linear-gradient(135deg,#EDE7F6,#E3F2FD);border-radius:14px;padding:14px 16px;border-left:3px solid #7C5CBF;}
+.ai-feedback-box.show{display:block;}
+.afb-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.78rem;color:#7C5CBF;font-weight:700;}
+.afb-text{font-size:.92rem;line-height:1.8;color:#333;}
+.afb-retry{background:none;border:1px solid #B39DDB;border-radius:999px;color:#7C5CBF;font-size:.75rem;padding:3px 10px;cursor:pointer;margin-top:8px;font-family:inherit;}
+.afb-retry:hover{background:#EDE7F6;}
+
+/* ── 动态个性化灵感卡 ── */
+.inspire-card{background:linear-gradient(135deg,#FFF8E1,#F3E8FF);border-radius:16px;padding:16px 18px;margin:16px 0;border:2px dashed #CE93D8;display:flex;align-items:flex-start;gap:12px;}
+.inspire-card-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px;}
+.inspire-card-body{flex:1;}
+.inspire-card-label{font-size:.72rem;font-weight:700;color:#9C27B0;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;}
+.inspire-card-text{font-size:.95rem;line-height:1.8;color:#4A148C;font-style:italic;min-height:1.4em;}
+.inspire-card-text.loading{color:#AB47BC;}
+.inspire-refresh{background:none;border:none;cursor:pointer;font-size:.78rem;color:#AB47BC;padding:4px 0;margin-top:6px;font-family:inherit;display:block;}
+.inspire-refresh:hover{color:#7B1FA2;}
+.inspire-refresh:disabled{opacity:.5;cursor:default;}
