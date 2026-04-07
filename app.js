@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPersonalWelcome();
   initAIFeedback();
   initPersonalizedInspire();
+  initDocAIFill();
 
   const clearBtn = document.getElementById('clear-all-btn');
   if (clearBtn) clearBtn.addEventListener('click', clearAll);
@@ -408,4 +409,124 @@ function initPersonalWelcome() {
       if (el.textContent) sessionStorage.setItem('pw_greet', el.textContent);
     });
   }
+}
+
+/* ── 第四幕：参赛文档 AI 辅助填写 ── */
+function initDocAIFill() {
+  const PREF = 'guide2026_';
+
+  // doc_title 自动填入故事作品名
+  const titleTA = document.querySelector('[data-key="doc_title"]');
+  if (titleTA && !titleTA.value) {
+    const storyTitle = localStorage.getItem(PREF + 'story_title');
+    if (storyTitle) {
+      titleTA.value = storyTitle;
+      titleTA.dispatchEvent(new Event('input'));
+    }
+  }
+
+  // doc_tools 自动填入标准工具说明
+  const toolsTA = document.querySelector('[data-key="doc_tools"]');
+  if (toolsTA && !toolsTA.value) {
+    toolsTA.value = '使用即梦（jimeng.jianying.com）生成视频片段；使用剪映进行剪辑、加旁白和背景音乐。';
+    toolsTA.dispatchEvent(new Event('input'));
+  }
+
+  // 三个 AI 辅助字段
+  const fields = [
+    {
+      key: 'doc_inspo',
+      label: '灵感来源',
+      getContext() {
+        const parts = [];
+        for (let i = 1; i <= 5; i++) {
+          const v = localStorage.getItem(PREF + `warmup_${i}`);
+          if (v) parts.push(`热身问题${i}的回答：${v}`);
+        }
+        const topicChoice = localStorage.getItem(PREF + 'topic_choice');
+        const topicWhy = localStorage.getItem(PREF + 'topic_why');
+        const storyOne = localStorage.getItem(PREF + 'story_one');
+        if (topicChoice) parts.push(`选择的故事主题：${topicChoice}`);
+        if (topicWhy) parts.push(`为什么选这个主题：${topicWhy}`);
+        if (storyOne) parts.push(`故事一句话简介：${storyOne}`);
+        return parts.join('\n');
+      }
+    },
+    {
+      key: 'doc_process',
+      label: '制作过程',
+      getContext() {
+        const parts = [];
+        ['story_title','story_open','story_scene1','story_scene2','story_scene3'].forEach((k, i) => {
+          const labels = ['作品名称','故事开场','场景1','场景2','场景3'];
+          const v = localStorage.getItem(PREF + k);
+          if (v) parts.push(`${labels[i]}：${v}`);
+        });
+        ['my_prompt_1','my_prompt_2','my_prompt_3'].forEach((k, i) => {
+          const v = localStorage.getItem(PREF + k);
+          if (v) parts.push(`镜头${i + 1}导演指令：${v.slice(0, 60)}…`);
+        });
+        return parts.join('\n');
+      }
+    },
+    {
+      key: 'doc_theme',
+      label: '主题表达',
+      getContext() {
+        const parts = [];
+        const storyOne = localStorage.getItem(PREF + 'story_one');
+        const storyEnd = localStorage.getItem(PREF + 'story_end');
+        const narOpen = localStorage.getItem(PREF + 'narration_open');
+        const narEnd = localStorage.getItem(PREF + 'narration_end');
+        if (storyOne) parts.push(`故事一句话简介：${storyOne}`);
+        if (storyEnd) parts.push(`故事结尾：${storyEnd}`);
+        if (narOpen) parts.push(`开场旁白：${narOpen}`);
+        if (narEnd) parts.push(`结尾旁白：${narEnd}`);
+        return parts.join('\n');
+      }
+    }
+  ];
+
+  fields.forEach(({ key, label, getContext }) => {
+    const textarea = document.querySelector(`[data-key="${key}"]`);
+    if (!textarea) return;
+
+    // 插入按钮
+    const btn = document.createElement('button');
+    btn.className = 'ai-feedback-btn';
+    btn.textContent = '✨ AI帮我写这段';
+
+    // 插入反馈盒（含"用到文档里"按钮）
+    const box = document.createElement('div');
+    box.className = 'ai-feedback-box';
+    box.innerHTML = `<div class="afb-header">🤖 满意的AI文档助手</div>
+<div class="afb-text"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+  <button class="afb-retry">↩ 换一种写法</button>
+  <button class="afb-use" style="background:none;border:1px solid #81C784;border-radius:999px;color:#388E3C;font-size:.75rem;padding:3px 10px;cursor:pointer;font-family:inherit;">✏️ 用到文档里</button>
+</div>`;
+
+    textarea.after(btn, box);
+
+    btn.addEventListener('click', async () => {
+      const context = getContext();
+      if (!context.trim()) {
+        alert('先把前几幕的内容填一填，AI才有素材帮你写哦！');
+        return;
+      }
+      btn.disabled = true;
+      await callAIFeedback('doc', `字段：${label}\n\n满意的创作记录：\n${context}`, box);
+      btn.disabled = false;
+    });
+
+    box.querySelector('.afb-retry').addEventListener('click', () => btn.click());
+    box.querySelector('.afb-use').addEventListener('click', () => {
+      const text = box.querySelector('.afb-text').textContent;
+      if (text && text !== '🤖 思考中……' && text !== '（网络繁忙，稍后再试试吧）') {
+        textarea.value = text;
+        textarea.dispatchEvent(new Event('input'));
+        textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
 }
