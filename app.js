@@ -270,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initStoryContext();
   initPromptChecklist();
   initMilestone();
+  initPersonalWelcome();
   initAIFeedback();
   initPersonalizedInspire();
 
@@ -369,4 +370,42 @@ function initPersonalizedInspire() {
       });
     }
   });
+}
+
+/* ── 首页个性化问候 ── */
+async function loadPersonalGreeting(el) {
+  el.style.opacity = '0.5';
+  el.textContent = '✨ 正在为满意专属定制……';
+  try {
+    const res = await fetch('/api/ai-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'greet', content: '' })
+    });
+    const data = await res.json();
+    el.textContent = data.text;
+  } catch (e) {
+    el.textContent = el.dataset.fallback || '';
+  }
+  el.style.opacity = '1';
+}
+
+function initPersonalWelcome() {
+  const el = document.getElementById('pw-greeting');
+  if (!el) return;
+  const cached = sessionStorage.getItem('pw_greet');
+  if (cached) {
+    el.textContent = cached;
+  } else {
+    loadPersonalGreeting(el).then(() => {
+      if (el.textContent) sessionStorage.setItem('pw_greet', el.textContent);
+    });
+  }
+  const refreshBtn = document.getElementById('pw-refresh');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      await loadPersonalGreeting(el);
+      if (el.textContent) sessionStorage.setItem('pw_greet', el.textContent);
+    });
+  }
 }

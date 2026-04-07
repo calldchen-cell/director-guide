@@ -27,7 +27,19 @@ export default async (req, context) => {
 - 类比具体、生动，用她熟悉的细节（传球时机、排练、舞台感等）
 - 每次给出不同角度，不要重复套路
 - 语气轻松像朋友，不像说教
-- 只输出这一句话，不加任何前缀或标点以外的格式`
+- 只输出这一句话，不加任何前缀或标点以外的格式`,
+
+    // ── 首页个性化问候 ──
+    greet: `你是满意最了解她的AI朋友，要给她一个温暖、有创意的开场问候。
+满意的情况：四年级，排球区队主力二传��全场调度的枢纽，把球在最关键的时刻传到最好的位置）、合唱团女高音（整首曲子最亮的那条旋律，让歌有了灵魂）。
+她现在要参加一个用AI制作短视频的比赛，题目是"2035年的未来校园"，要当导演。
+请写3～4句话，格式要求：
+- 第一句：从她的排球或合唱经历里找一个具体、新鲜的角度夸她（每次不同，不能重复"读懂全场"或"旋律灵魂"这两个固定说法）
+- 第二句：创意地把这个能力和"电影导演"连起来（类比要有趣，不要说教）
+- 第三句：简短说这份指南是专门为她写的
+- 第四句：一句充满期待的鼓励，让她迫不及待想开始
+语气：真诚、温暖、有点酷，像了解她很久的朋友，不像老师。
+只输出这3～4句话，不加称呼前缀，不用markdown，不用分段符号。`
   };
 
   const apiKey = Netlify.env.get('ZHIPU_API_KEY');
@@ -37,7 +49,7 @@ export default async (req, context) => {
     systemContent = systemContent.replace('{topic}', content);
   }
 
-  const userMessage = type === 'inspire' ? '请给出这个类比：' : content;
+  const userMessage = (type === 'inspire' || type === 'greet') ? '请开始：' : content;
 
   const res = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
     method: 'POST',
@@ -51,8 +63,8 @@ export default async (req, context) => {
         { role: 'system', content: systemContent },
         { role: 'user', content: userMessage }
       ],
-      max_tokens: 150,
-      temperature: type === 'inspire' ? 0.9 : 0.7
+      max_tokens: 200,
+      temperature: (type === 'inspire' || type === 'greet') ? 0.9 : 0.7
     })
   });
 
